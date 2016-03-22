@@ -25,7 +25,6 @@ public class AgingWindowEvaluator extends GenericEvaluator{
     
     private ArrayList<Float> observ; //list with the VIEW_SIZE observations
     
-    
     //26/05/2014: constructor
     //public AgingWindowEvaluator(int viewsize, float th_max, float th_min){
     //    super(viewsize, th_max, th_min); //call father's constructor

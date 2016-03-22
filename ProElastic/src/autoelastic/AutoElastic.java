@@ -49,6 +49,8 @@ import thresholds.*;
  *            - updated the monitoring method to use the new Live Thresholding algorithm with the class LiveThresholds
  * 13/01/2016 - viniciusfacco
  *            - fixed bug when using fixed threshold (after a threshold violation one of the thresholds was reset) 
+ * 17/02/2016 - igornardin
+ *            - add proactive algoritms
  */
 public class AutoElastic implements Runnable {
 
@@ -109,6 +111,7 @@ public class AutoElastic implements Runnable {
      * @param pvnm - cloud virtual network manager type
      * @param pcid - cloud cluster id
      * @param plog - component to receive the log messages
+     * @param ppredict - Predictive algorithm
      */
     public void set_parameters(String pfrontend, 
                        String pusuario, 
@@ -159,9 +162,6 @@ public class AutoElastic implements Runnable {
     @Override
     public void run() {
         
-        //Este é o gerenciador principal
-        System.out.println("Oi Vini");        
-
         try {
 /*LOG*    */gera_log(objname,"Inicialização...");
             inicialize();//inicialize the system
@@ -325,6 +325,13 @@ public class AutoElastic implements Runnable {
                 break;
             case "full_aging":
                 evaluator = new AgingFullEvaluator(viewsize);
+                break;
+            case "arima":
+                evaluator = new ProArimaEvaluator(viewsize);
+                break;
+            case "holtwinter":
+                evaluator = new ProHoltWinterEvaluator(viewsize);
+                break;
         }
         //create a new threshold manager
         switch (thresholdtype){
@@ -357,12 +364,13 @@ public class AutoElastic implements Runnable {
     public void startLabMode(String srv, String usr, String pwd, String sla, String[] hosts, JTextArea lg) throws InterruptedException, IOException, ParserConfigurationException, SAXException, Exception{
         
         SSHClient ssh = new SSHClient(srv, usr, pwd);
+        //TODO: Ajustar o IP do mestre
         String ip_vm_master = "10.210.14.65";//VM que vai rodar mestre e slave inicial. Processos devem ser iniciados manualmente aqui.
         String server_message_start = "appstarted";
         String server_message_stop = "appstoped";
         String autoelastic_message_start = "startapp";
         String master_command;
-        String localdir_temp_files = "C:\\temp\\autoelastic\\";
+        String localdir_temp_files = "C:\\temp\\proelastic\\";
         String remotedir_message = "/var/lib/one/app/msg/";
         String remotedir_logs = "/one/app/logs/"; //diretorio que o mestre irá utilizar para salvar os logs
         
@@ -377,7 +385,7 @@ public class AutoElastic implements Runnable {
         AutoElastic.slapath = sla;
         AutoElastic.log = lg;
         AutoElastic.iphosts = hosts;        
-        AutoElastic.logspath = "C:\\Temp\\autoelastic\\";
+        AutoElastic.logspath = "C:\\Temp\\proelastic\\";
         AutoElastic.vmtemplateid = 3;
         AutoElastic.intervalo = 15 * 1000;
         AutoElastic.num_vms = 2;
@@ -483,7 +491,7 @@ public class AutoElastic implements Runnable {
                         }
 
                         //aqui vamos colocar dentro do arquivo de alocações um marcador de que uma nova execução está iniciando. Esse marcador vai ser o nome da execução que é o nome do outro log que é gerado
-                        arquivo = new File("C:\\temp\\autoelastic\\autoelastic_resource_operation.csv");
+                        arquivo = new File("C:\\temp\\proelastic\\autoelastic_resource_operation.csv");
                         escritor = new BufferedWriter(new FileWriter(arquivo, true));
                         escritor.append(System.currentTimeMillis() + ";INI " + AutoElastic.logtitle + "\n");
                         escritor.close();
@@ -493,7 +501,7 @@ public class AutoElastic implements Runnable {
                         System.out.println("###############Aplicação finalizada###############");
 
                         //aqui vamos escrever dentro do arquivo de alocações que a execução terminou
-                        arquivo = new File("C:\\temp\\autoelastic\\autoelastic_resource_operation.csv");
+                        arquivo = new File("C:\\temp\\proelastic\\autoelastic_resource_operation.csv");
                         escritor = new BufferedWriter(new FileWriter(arquivo, true));
                         escritor.append(System.currentTimeMillis() + ";FIM " + AutoElastic.logtitle + "\n");
                         escritor.close();
@@ -502,7 +510,7 @@ public class AutoElastic implements Runnable {
                         ssh.deleteFile(server_message_start, remotedir_message);
 
                         //vamos salvar o log com os tempos do AutoElastic
-                        arquivo = new File("C:\\temp\\autoelastic\\Tempos-" + AutoElastic.logtitle + ".csv");
+                        arquivo = new File("C:\\temp\\proelastic\\Tempos-" + AutoElastic.logtitle + ".csv");
                         escritor = new BufferedWriter(new FileWriter(arquivo, true));
                         escritor.append(times);
                         escritor.close();

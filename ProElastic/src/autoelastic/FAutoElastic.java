@@ -68,14 +68,18 @@ public class FAutoElastic extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jtfLogPath = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
-        jLabel16 = new javax.swing.JLabel();
-        jrbAging = new javax.swing.JRadioButton();
-        jrbGeneric = new javax.swing.JRadioButton();
-        jRadioButton1 = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jrbFixed = new javax.swing.JRadioButton();
         jrbLive = new javax.swing.JRadioButton();
+        jrbPred = new javax.swing.JRadioButton();
+        jLabel16 = new javax.swing.JLabel();
+        jrbAging = new javax.swing.JRadioButton();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jrbGeneric = new javax.swing.JRadioButton();
+        jLabel21 = new javax.swing.JLabel();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jRadioButton3 = new javax.swing.JRadioButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jtfThresholdMax = new javax.swing.JTextField();
@@ -287,7 +291,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbBuscarSLA.setForeground(new java.awt.Color(255, 255, 255));
         jbBuscarSLA.setText("SLA");
         jbBuscarSLA.setContentAreaFilled(false);
-        jbBuscarSLA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbBuscarSLA.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbBuscarSLA.setFocusable(false);
         jbBuscarSLA.setOpaque(true);
         jbBuscarSLA.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -321,53 +325,15 @@ public class FAutoElastic extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jLabel16.setText("Evaluation Algorithm");
-
-        jrbAging.setBackground(new java.awt.Color(255, 255, 255));
-        bgEvaluators.add(jrbAging);
-        jrbAging.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jrbAging.setSelected(true);
-        jrbAging.setText("Window Aging");
-        jrbAging.setToolTipText("");
-        jrbAging.setActionCommand("window_aging");
-
-        jrbGeneric.setBackground(new java.awt.Color(255, 255, 255));
-        bgEvaluators.add(jrbGeneric);
-        jrbGeneric.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jrbGeneric.setText("Generic");
-        jrbGeneric.setActionCommand("generic");
-
-        jRadioButton1.setBackground(new java.awt.Color(255, 255, 255));
-        bgEvaluators.add(jRadioButton1);
-        jRadioButton1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jRadioButton1.setText("Full Aging");
-        jRadioButton1.setActionCommand("full_aging");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jrbAging, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jRadioButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jrbGeneric, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(62, Short.MAX_VALUE))
+            .addGap(0, 75, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel16)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jrbAging)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jRadioButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jrbGeneric))
+            .addGap(0, 104, Short.MAX_VALUE)
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -378,7 +344,6 @@ public class FAutoElastic extends javax.swing.JFrame {
         jrbFixed.setBackground(new java.awt.Color(255, 255, 255));
         bgThresholdType.add(jrbFixed);
         jrbFixed.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jrbFixed.setSelected(true);
         jrbFixed.setText("Static");
         jrbFixed.setActionCommand("static");
 
@@ -388,28 +353,102 @@ public class FAutoElastic extends javax.swing.JFrame {
         jrbLive.setText("Live");
         jrbLive.setActionCommand("live");
 
+        jrbPred.setBackground(new java.awt.Color(255, 255, 255));
+        bgThresholdType.add(jrbPred);
+        jrbPred.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jrbPred.setText("Predictive");
+        jrbPred.setActionCommand("predictive");
+
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jLabel16.setText("Evaluation Algorithm");
+
+        jrbAging.setBackground(new java.awt.Color(255, 255, 255));
+        bgEvaluators.add(jrbAging);
+        jrbAging.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jrbAging.setText("Window Aging");
+        jrbAging.setToolTipText("");
+        jrbAging.setActionCommand("window_aging");
+
+        jRadioButton1.setBackground(new java.awt.Color(255, 255, 255));
+        bgEvaluators.add(jRadioButton1);
+        jRadioButton1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jRadioButton1.setText("Full Aging");
+        jRadioButton1.setActionCommand("full_aging");
+
+        jrbGeneric.setBackground(new java.awt.Color(255, 255, 255));
+        bgEvaluators.add(jrbGeneric);
+        jrbGeneric.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jrbGeneric.setText("Generic");
+        jrbGeneric.setActionCommand("generic");
+
+        jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jLabel21.setText("Predictive Algorithm");
+
+        jRadioButton2.setBackground(new java.awt.Color(255, 255, 255));
+        bgEvaluators.add(jRadioButton2);
+        jRadioButton2.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jRadioButton2.setText("Arima");
+        jRadioButton2.setActionCommand("arima");
+
+        jRadioButton3.setBackground(new java.awt.Color(255, 255, 255));
+        bgEvaluators.add(jRadioButton3);
+        jRadioButton3.setText("Holt-Winter");
+        jRadioButton3.setActionCommand("holtwinter");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jrbLive)
-                    .addComponent(jLabel17)
-                    .addComponent(jrbFixed))
-                .addContainerGap(64, Short.MAX_VALUE))
+                    .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jrbFixed)
+                    .addComponent(jrbPred, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jrbAging, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jRadioButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jrbGeneric, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jRadioButton3)
+                            .addComponent(jRadioButton2))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel17)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jrbFixed)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jrbLive)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jrbFixed)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jrbLive))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel16)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jrbAging)
+                                .addComponent(jRadioButton2))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jRadioButton1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jrbGeneric)
+                                .addComponent(jrbPred)
+                                .addComponent(jRadioButton3)))))
+                .addGap(0, 17, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -457,7 +496,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                     .addComponent(jtfMonitoringWindow, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                     .addComponent(jtfThresholdMin)
                     .addComponent(jtfThresholdMax))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -521,7 +560,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                     .addComponent(jtfMonitoringInterval, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                     .addComponent(jtfTemplateid, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jtfVmsPorHost, javax.swing.GroupLayout.Alignment.LEADING))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -636,7 +675,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbAddHost.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jbAddHost.setText("+");
         jbAddHost.setContentAreaFilled(false);
-        jbAddHost.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbAddHost.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbAddHost.setFocusable(false);
         jbAddHost.setOpaque(true);
         jbAddHost.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -663,7 +702,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbDelHost.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jbDelHost.setText("-");
         jbDelHost.setContentAreaFilled(false);
-        jbDelHost.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbDelHost.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbDelHost.setFocusable(false);
         jbDelHost.setOpaque(true);
         jbDelHost.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -702,9 +741,9 @@ public class FAutoElastic extends javax.swing.JFrame {
             jpHostsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(jpHostsLayout.createSequentialGroup()
-                .addComponent(jbAddHost, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                .addComponent(jbAddHost, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jbDelHost, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE))
+                .addComponent(jbDelHost, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Hosts", jpHosts);
@@ -728,7 +767,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         );
         jpGraficoLineTotalLayout.setVerticalGroup(
             jpGraficoLineTotalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 186, Short.MAX_VALUE)
+            .addGap(0, 194, Short.MAX_VALUE)
         );
 
         jbGraphicLinePercent.setBackground(new java.awt.Color(255, 255, 255));
@@ -768,7 +807,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbLimpar.setForeground(new java.awt.Color(255, 255, 255));
         jbLimpar.setText("Reset");
         jbLimpar.setContentAreaFilled(false);
-        jbLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbLimpar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbLimpar.setFocusable(false);
         jbLimpar.setOpaque(true);
         jbLimpar.setPreferredSize(new java.awt.Dimension(81, 23));
@@ -798,7 +837,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbExecutar.setText("Execute");
         jbExecutar.setBorder(null);
         jbExecutar.setContentAreaFilled(false);
-        jbExecutar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbExecutar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbExecutar.setFocusable(false);
         jbExecutar.setOpaque(true);
         jbExecutar.setPreferredSize(new java.awt.Dimension(81, 23));
@@ -828,7 +867,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbParar.setText("Stop");
         jbParar.setBorder(null);
         jbParar.setContentAreaFilled(false);
-        jbParar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbParar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbParar.setEnabled(false);
         jbParar.setFocusable(false);
         jbParar.setOpaque(true);
@@ -886,7 +925,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbMinimize.setForeground(new java.awt.Color(102, 102, 102));
         jbMinimize.setText("_");
         jbMinimize.setContentAreaFilled(false);
-        jbMinimize.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbMinimize.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbMinimize.setFocusable(false);
         jbMinimize.setOpaque(true);
         jbMinimize.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -914,7 +953,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbSaleLog.setForeground(new java.awt.Color(255, 255, 255));
         jbSaleLog.setText("Save LOG");
         jbSaleLog.setContentAreaFilled(false);
-        jbSaleLog.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbSaleLog.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbSaleLog.setFocusable(false);
         jbSaleLog.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jbSaleLog.setOpaque(true);
@@ -944,7 +983,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jbAbout.setText("About");
         jbAbout.setToolTipText("");
         jbAbout.setContentAreaFilled(false);
-        jbAbout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbAbout.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbAbout.setFocusable(false);
         jbAbout.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jbAbout.setOpaque(true);
@@ -970,14 +1009,14 @@ public class FAutoElastic extends javax.swing.JFrame {
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setText("AutoElastic");
+        jLabel18.setText("ProElastic");
 
         jbExit.setBackground(new java.awt.Color(255, 153, 153));
         jbExit.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jbExit.setForeground(new java.awt.Color(102, 102, 102));
         jbExit.setText("X");
         jbExit.setContentAreaFilled(false);
-        jbExit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbExit.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jbExit.setFocusable(false);
         jbExit.setOpaque(true);
         jbExit.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1060,7 +1099,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                 .addGap(3, 3, 3)
                 .addComponent(jpMainButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1178,7 +1217,7 @@ public class FAutoElastic extends javax.swing.JFrame {
                 host = model.getDataVector().get(i).toString();
                 hosts[i] = host.replace("[", "").replace("]", "");
             }
-
+            
             //seta parametros do gerenciador
             autoelastic_manager.set_parameters(
                     this.jtfFrontend.getText(),
@@ -1508,6 +1547,7 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1520,6 +1560,8 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
@@ -1549,6 +1591,7 @@ public class FAutoElastic extends javax.swing.JFrame {
     private javax.swing.JRadioButton jrbFixed;
     private javax.swing.JRadioButton jrbGeneric;
     private javax.swing.JRadioButton jrbLive;
+    private javax.swing.JRadioButton jrbPred;
     private javax.swing.JTable jtHosts;
     private javax.swing.JTextArea jtaLog;
     private javax.swing.JTextField jtfClusterId;
@@ -1585,15 +1628,15 @@ public class FAutoElastic extends javax.swing.JFrame {
 
     private void variaveis_padroes() {
         //definir os parametros para o padrao
-        this.jtfFrontend.setText("10.210.7.116");
+        this.jtfFrontend.setText("192.168.1.8");
         this.jtfUsuario.setText("oneadmin");
-        this.jtfSenha.setText("nebula");
+        this.jtfSenha.setText("opennebula");
         this.jtfSla.setText("C:\\Users\\Vinicius Facco\\Dropbox\\UNISINOS\\PIPCA\\Projetos\\AutoElastic\\autoelasticsla.xml");
-        this.jtfLogPath.setText("C:\\Temp\\autoelastic\\");
+        this.jtfLogPath.setText("C:\\Temp\\proelastic\\");
         this.jtfExecutionLogName.setText("");
         this.jtfMonitoringInterval.setText("15");
-        this.jtfMonitoringWindow.setText("6");
-        this.jtfTemplateid.setText("3");
+        this.jtfMonitoringWindow.setText("10");
+        this.jtfTemplateid.setText("1");
         this.jtfThresholdMax.setText("80");
         this.jtfThresholdMin.setText("40");
         this.jtfVmsPorHost.setText("2");
