@@ -18,6 +18,7 @@ public class ProArimaEvaluator extends GenericEvaluator{
     private ArrayList<Float> observ; //list with the VIEW_SIZE observations
     static Rengine re;
     static REXP resp;
+    static int forecast = 5;
     
     //17/02/2016: constructor
     public ProArimaEvaluator(int viewsize){
@@ -68,7 +69,7 @@ public class ProArimaEvaluator extends GenericEvaluator{
         }
         re.assign("y", aux);
         re.eval("fit=auto.arima(y)");
-        resp = re.eval("f <- forecast(fit, h=5)");
+        resp = re.eval("f <- forecast(fit, h=" + forecast + ")");
         return (float) resp.asList().at(3).asDoubleArray()[4];
     }
     
