@@ -233,7 +233,7 @@ public class AutoElastic implements Runnable {
             /*GRA*/graphic2.update(cont, cloud_manager.getCPULoad(), 1, thresholds.getUpperThreshold(), thresholds.getLowerThreshold());
             /*LOG*/gera_log(objname,"Main|monitora: Soma da carga de cpu de todos os hosts: " + cloud_manager.getUsedCPU() + " / Threshold maximo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getUpperThreshold() + " / Threshold minimo estabelecido: " + cloud_manager.getAllocatedCPU() * thresholds.getLowerThreshold());
             /*LOG*/gera_log(objname,"Main: Realiza verificação de alguma violação dos thresholds...");
-            evaluator.computeLoad(cloud_manager.getCPULoad());            
+            /*LOG*/gera_log(objname,"Main: Valor computado:" + evaluator.computeLoad(cloud_manager.getCPULoad()));            
             if (recalculate_thresholds > 0){//if this flag is greater than 0, then we must recalculate the thresholds (Live Thresholding)
                 load_after = evaluator.getDecisionLoad();//get the new load with the new resources
                 switch (recalculate_thresholds){
