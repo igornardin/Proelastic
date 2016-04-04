@@ -390,7 +390,8 @@ public class AutoElastic implements Runnable {
         AutoElastic.intervalo = 15 * 1000;
         AutoElastic.num_vms = 2;
         AutoElastic.viewsize = 6;
-        AutoElastic.evaluatortype = "full_aging";
+        AutoElastic.evaluatortype = "arima";
+        //AutoElastic.evaluatortype = "full_aging";
         AutoElastic.thresholdtype = "static";
         AutoElastic.image_manager = "kvm";
         AutoElastic.virtual_machine_manager = "kvm";
@@ -550,8 +551,10 @@ public class AutoElastic implements Runnable {
             ///*LOG*/gera_log(objname,"Main|monitora: Carga do ambiente: " + cloud_manager.getCPULoad() + " / Threshold superior: " + thresholds.getUpperThreshold() + " / Threshold inferior: " + thresholds.getLowerThreshold());
             ///*LOG*/gera_log(objname,"Main: Realiza verificação de alguma violação dos thresholds...");
             times = times + ";" + System.currentTimeMillis(); //T5-AntesDeAvaliarCarga
-            load = cloud_manager.getCPULoad();
-            System.out.println("Valor da CPU lido: " + load + " Valor computado: " + evaluator.computeLoad(load));
+            if (cont != 1 || !AutoElastic.evaluatortype.equals("arima")){
+                load = cloud_manager.getCPULoad();
+                System.out.println("Valor da CPU lido: " + load + " Valor computado: " + evaluator.computeLoad(load));
+            }
 //            if (recalculate_thresholds > 0){//se essa flag foi maior que 0 então devo recalcular os thresholds (faço isso após a sincronização)
 //                load_after = evaluator.getDecisionLoad();//pego o novo load já com os novos recursos
 //                switch (recalculate_thresholds){

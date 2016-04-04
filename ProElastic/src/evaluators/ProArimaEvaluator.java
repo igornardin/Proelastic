@@ -40,11 +40,11 @@ public class ProArimaEvaluator extends GenericEvaluator{
     @Override
     public boolean evaluate(float upper_threshold, float lower_threshold){        
             //test if the aging is out of the range between the thresholds
-        if (decision_load > 80) { //test if we have a violation on the higher threshold after aply the aging
+        if (decision_load > 0.80) { //test if we have a violation on the higher threshold after aply the aging
             high_alert = true; 
             low_alert = false; 
             return true;
-        } else if (decision_load < 20){ //test if we have a violation on the lower threshold after aply the aging
+        } else if (decision_load < 0.20){ //test if we have a violation on the lower threshold after aply the aging
             high_alert = false;
             low_alert = true;
             return true; 
