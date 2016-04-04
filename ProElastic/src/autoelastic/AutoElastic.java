@@ -59,7 +59,7 @@ public class AutoElastic implements Runnable {
     private Evaluator evaluator;        //avaliador para saber se operações devem ser tomadas ou não
     private Thresholds thresholds;      //object to manage the thresholds
     
-    private static final String objname = "autoelastic.AutoElastic"; //name of the object to use in log information
+    private static final String objname = "proelastic.ProElastic"; //name of the object to use in log information
     private static String frontend;
     private static String usuario;
     private static String senha;
@@ -203,7 +203,7 @@ public class AutoElastic implements Runnable {
     
     //método para geração do arquivo de log
     private static void export_log(int contador, int time, long timemilis, int num_hosts, float tot_cpu_dis, float tot_cpu_usa, float tot_mem_dis, float tot_mem_usa, double th_max, double th_min, float load, float calcutated_load, float lowert, float uppert, String extra_info){
-        File arquivo = new File(logspath + "autoelastic" + logtitle + ".csv");
+        File arquivo = new File(logspath + "proelastic" + logtitle + ".csv");
         try (
             BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo, true))) {
             escritor.append(contador + ";" + time + ";" + timemilis + ";" + num_hosts + ";" + tot_cpu_dis + ";" + tot_cpu_usa + ";" + tot_mem_dis + ";" + tot_mem_usa + ";" + th_max + ";" + th_min + ";" + load + ";" + calcutated_load + ";" + lowert + ";" + uppert + ";" + extra_info + "\n");
@@ -365,7 +365,7 @@ public class AutoElastic implements Runnable {
         
         SSHClient ssh = new SSHClient(srv, usr, pwd);
         //TODO: Ajustar o IP do mestre
-        String ip_vm_master = "10.210.14.65";//VM que vai rodar mestre e slave inicial. Processos devem ser iniciados manualmente aqui.
+        String ip_vm_master = "191.4.238.100";//VM que vai rodar mestre e slave inicial. Processos devem ser iniciados manualmente aqui.
         String server_message_start = "appstarted";
         String server_message_stop = "appstoped";
         String autoelastic_message_start = "startapp";
@@ -403,15 +403,15 @@ public class AutoElastic implements Runnable {
         int initial_hosts = 1;
         int minimum_hosts = 1;
         boolean letsgo = false;
-        String[] apps = {"ex-"};//cargas que serao testadas
-        int[] upperthresholds = {70,90};//thresholds que serao testados
-        int[] lowerthresholds = {30,50};//thresholds que serao testados
+        String[] apps = {"wav"};//cargas que serao testadas
+        int[] upperthresholds = {80};//thresholds que serao testados
+        int[] lowerthresholds = {20};//thresholds que serao testados
         for (String app : apps) {
             for (int uthreshold : upperthresholds){
                 for (int lthreshold : lowerthresholds){
                     if (lthreshold <= uthreshold){//não posso fazer execuções em que threshold inferior é maior que o superior
                         //seto os parametros dessa execução
-                        AutoElastic.logtitle = thresholdtype + "-" + app + "UT" + uthreshold + "LT" + lthreshold;
+                        AutoElastic.logtitle = "proelastic-" + app;
                         System.out.println("Log: " + AutoElastic.logtitle);
                         AutoElastic.uppert = (float) uthreshold/100;
                         AutoElastic.lowert = (float) lthreshold/100;
@@ -470,7 +470,7 @@ public class AutoElastic implements Runnable {
                                 + (initial_hosts * 2)               
                                 //#4 quantidade inicial de vms
                                 + " "
-                                + remotedir_logs + AutoElastic.thresholdtype + "/" + app + "/u" + uthreshold + "/l" + lthreshold + "/";
+                                + remotedir_logs + "teste/" + app + "/";
                                 //#5 diretorio que o mestre vai salvar o log
                         //crio o arquivo para o bash ler e rodar o comando de dentro dele
                         System.out.println("Comando de inicialização da aplicação: " + master_command);
@@ -491,7 +491,7 @@ public class AutoElastic implements Runnable {
                         }
 
                         //aqui vamos colocar dentro do arquivo de alocações um marcador de que uma nova execução está iniciando. Esse marcador vai ser o nome da execução que é o nome do outro log que é gerado
-                        arquivo = new File("C:\\temp\\proelastic\\autoelastic_resource_operation.csv");
+                        arquivo = new File("C:\\temp\\proelastic\\proelastic_resource_operation.csv");
                         escritor = new BufferedWriter(new FileWriter(arquivo, true));
                         escritor.append(System.currentTimeMillis() + ";INI " + AutoElastic.logtitle + "\n");
                         escritor.close();
@@ -501,7 +501,7 @@ public class AutoElastic implements Runnable {
                         System.out.println("###############Aplicação finalizada###############");
 
                         //aqui vamos escrever dentro do arquivo de alocações que a execução terminou
-                        arquivo = new File("C:\\temp\\proelastic\\autoelastic_resource_operation.csv");
+                        arquivo = new File("C:\\temp\\proelastic\\proelastic_resource_operation.csv");
                         escritor = new BufferedWriter(new FileWriter(arquivo, true));
                         escritor.append(System.currentTimeMillis() + ";FIM " + AutoElastic.logtitle + "\n");
                         escritor.close();
@@ -527,8 +527,9 @@ public class AutoElastic implements Runnable {
         int cont = 0; //contador de verificações
         long timeLoop; //usarei essa variavel para calcular o tempo total para realizar o loop
         boolean resourcesPending = false;
-        byte recalculate_thresholds = 0;
+        //byte recalculate_thresholds = 0;
         float load_before = 0, load_after; //loads before and after delivery new resources
+        float load = 0;
         String times = "Contador;T1-InicioLoop;T2-AntesDeSincronizar;T3-AposSincronizar&AntesDeCalcularThresholds;T4-AposCalcularThresholds;T5-AntesDeAvaliarCarga;T6-AposAvaliarCarga;T7-AntesDeAlocar;T8-AposAlocar;T9-AntesDeDesalocar;T10-AposDesalocar;T11-AntesDeVerificarRecursosPendentes;T12-AposVerificarRecursosPendentes&FimLoop;Sincronização;CalculoThresholds;AvaliaçãoCarga;Alocação;Desalocação;VerificaRecursosPendentes;Loop";
         long time0 = System.currentTimeMillis(); //tempo inicial
         long timen = System.currentTimeMillis(); //primeiro tempo antes de iniciar o loop, apos isso esse tempo vai ser coletado no final após o sleep
@@ -549,24 +550,25 @@ public class AutoElastic implements Runnable {
             ///*LOG*/gera_log(objname,"Main|monitora: Carga do ambiente: " + cloud_manager.getCPULoad() + " / Threshold superior: " + thresholds.getUpperThreshold() + " / Threshold inferior: " + thresholds.getLowerThreshold());
             ///*LOG*/gera_log(objname,"Main: Realiza verificação de alguma violação dos thresholds...");
             times = times + ";" + System.currentTimeMillis(); //T5-AntesDeAvaliarCarga
-            evaluator.computeLoad(cloud_manager.getCPULoad());
-            if (recalculate_thresholds > 0){//se essa flag foi maior que 0 então devo recalcular os thresholds (faço isso após a sincronização)
-                load_after = evaluator.getDecisionLoad();//pego o novo load já com os novos recursos
-                switch (recalculate_thresholds){
-                    case 1://significa que a violação foi no threshold superior
-                        //thresholds.setUpperThreshold(1);                                            //técnica 1
-                        thresholds.recalculateUpperThreshold(1,load_after,load_after);              //técnica 2
-                        //thresholds.recalculateUpperThreshold(load_before,load_after,load_before);   //técnica 3
-                        //thresholds.setLowerThreshold(0);                                            //reseto o outro
-                        break;
-                    case 2://significa que a violação foi no threshold inferior
-                        //thresholds.setLowerThreshold(0);                                            //técnica 4
-                        //thresholds.recalculateLowerThreshold(load_after,0,load_after);              //técnica 5
-                        thresholds.recalculateLowerThreshold(load_before,load_after,load_before);   //técnica 6
-                        //thresholds.setUpperThreshold(1);                                            //reseto o outro
-                }
-                recalculate_thresholds = 0;
-            }
+            load = cloud_manager.getCPULoad();
+            System.out.println("Valor da CPU lido: " + load + " Valor computado: " + evaluator.computeLoad(load));
+//            if (recalculate_thresholds > 0){//se essa flag foi maior que 0 então devo recalcular os thresholds (faço isso após a sincronização)
+//                load_after = evaluator.getDecisionLoad();//pego o novo load já com os novos recursos
+//                switch (recalculate_thresholds){
+//                    case 1://significa que a violação foi no threshold superior
+//                        //thresholds.setUpperThreshold(1);                                            //técnica 1
+//                        thresholds.recalculateUpperThreshold(1,load_after,load_after);              //técnica 2
+//                        //thresholds.recalculateUpperThreshold(load_before,load_after,load_before);   //técnica 3
+//                        //thresholds.setLowerThreshold(0);                                            //reseto o outro
+//                        break;
+//                    case 2://significa que a violação foi no threshold inferior
+//                        //thresholds.setLowerThreshold(0);                                            //técnica 4
+//                        //thresholds.recalculateLowerThreshold(load_after,0,load_after);              //técnica 5
+//                        thresholds.recalculateLowerThreshold(load_before,load_after,load_before);   //técnica 6
+//                        //thresholds.setUpperThreshold(1);                                            //reseto o outro
+//                }
+//                recalculate_thresholds = 0;
+//            }
             if ((evaluator.evaluate(thresholds.getUpperThreshold(), thresholds.getLowerThreshold())) && (!resourcesPending)){
                 //analyze the cloud situation and if we have some violation we need deal with this and if we are not waiting for new resource allocation we can evaluate the cloud
                 times = times + ";" + System.currentTimeMillis(); //T6-AposAvaliarCarga
@@ -594,7 +596,7 @@ public class AutoElastic implements Runnable {
                         ///*LOG*/gera_log(objname,"Main: Liberando recursos...");
                         times = times + ";;;" + System.currentTimeMillis(); //T7 e T8 vazios + T9-AntesDeDesalocar
                         cloud_manager.decreaseResources(); //decrease the last host added and the number its vms
-                        recalculate_thresholds = 2;
+                        //recalculate_thresholds = 2;
                         load_before = evaluator.getDecisionLoad();
                         times = times + ";" + System.currentTimeMillis(); //T10-AposDesalocar
                     } else {
@@ -613,9 +615,9 @@ public class AutoElastic implements Runnable {
             if (resourcesPending){//se tenho recursos pendentes, entao devo verificar se eles ja estao online para eu adicionalos e recalcular os thresholds
                 load_before = evaluator.getDecisionLoad();
                 resourcesPending = cloud_manager.newResourcesPending(); //verifico no final antes do sleep se tenho que entregar mais recursos, dessa maneira esses recursos só serão analisados na próxima observação
-                if (!resourcesPending){//se agora eles não estão mais pendentes é porque ficaram online, tenho que recalcular os thresholds no início da próxima observação
-                    recalculate_thresholds = 1;
-                }
+//                if (!resourcesPending){//se agora eles não estão mais pendentes é porque ficaram online, tenho que recalcular os thresholds no início da próxima observação
+//                    recalculate_thresholds = 1;
+//                }
             }            
             times = times + ";" + System.currentTimeMillis(); //T12-AposVerificarRecursosPendentes&FimLoop
             timeLoop = System.currentTimeMillis() - timen; //pego o tempo que cheguei até aqui e calculo o tempo após o sleep (inicio do processamento)

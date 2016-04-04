@@ -9,7 +9,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="AutoElastic"/>
+    <Property name="title" type="java.lang.String" value="ProElastic"/>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="ff" green="ff" red="ff" type="rgb"/>
     </Property>
@@ -942,21 +942,8 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="12" style="0"/>
                         </Property>
-                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="1" rowCount="10">
-                            <Column editable="true" title="Hosts" type="java.lang.String">
-                              <Data value="10.210.1.88"/>
-                              <Data value="10.210.2.164"/>
-                              <Data value="10.210.5.57"/>
-                              <Data value="10.210.5.120"/>
-                              <Data value="10.210.6.232"/>
-                              <Data value="10.210.7.129"/>
-                              <Data value="10.210.7.130"/>
-                              <Data value="10.210.7.131"/>
-                              <Data value="10.210.7.230"/>
-                              <Data value="10.210.7.231"/>
-                            </Column>
-                          </Table>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {&quot;191.4.237.219&quot;},&#xa;        {&quot;191.4.237.220&quot;},&#xa;        {&quot;191.4.237.150&quot;},&#xa;        {&quot;191.4.237.222&quot;},&#xa;        {&quot;191.4.237.221&quot;},&#xa;        {&quot;191.4.237.223&quot;},&#xa;        {&quot;191.4.233.61&quot;},&#xa;        {&quot;191.4.237.224&quot;},&#xa;        {&quot;191.4.237.225&quot;},&#xa;        {&quot;191.4.237.226&quot;}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Hosts&quot;&#xa;    }&#xa;) {&#xa;    Class[] types = new Class [] {&#xa;        java.lang.String.class&#xa;    };&#xa;&#xa;    public Class getColumnClass(int columnIndex) {&#xa;        return types [columnIndex];&#xa;    }&#xa;}" type="code"/>
                         </Property>
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                           <TableColumnModel selectionModel="0">

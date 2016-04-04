@@ -241,7 +241,7 @@ public class OneHost {
     
     //method to generate a specific log
     private static void greenHPC_log(String data){
-        File arquivo = new File("C:\\temp\\proelastic\\autoelastic_resource_operation.csv");
+        File arquivo = new File("C:\\temp\\proelastic\\proelastic_resource_operation.csv");
         try (
             BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo, true))) {
             escritor.append(data + "\n");

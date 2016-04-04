@@ -120,7 +120,7 @@ public class FAutoElastic extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("AutoElastic");
+        setTitle("ProElastic");
         setBackground(new java.awt.Color(255, 255, 255));
         setIconImages(null);
 
@@ -645,16 +645,16 @@ public class FAutoElastic extends javax.swing.JFrame {
         jtHosts.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jtHosts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"10.210.1.88"},
-                {"10.210.2.164"},
-                {"10.210.5.57"},
-                {"10.210.5.120"},
-                {"10.210.6.232"},
-                {"10.210.7.129"},
-                {"10.210.7.130"},
-                {"10.210.7.131"},
-                {"10.210.7.230"},
-                {"10.210.7.231"}
+                {"191.4.237.219"},
+                {"191.4.237.220"},
+                {"191.4.237.150"},
+                {"191.4.237.222"},
+                {"191.4.237.221"},
+                {"191.4.237.223"},
+                {"191.4.233.61"},
+                {"191.4.237.224"},
+                {"191.4.237.225"},
+                {"191.4.237.226"}
             },
             new String [] {
                 "Hosts"
@@ -1628,17 +1628,17 @@ public class FAutoElastic extends javax.swing.JFrame {
 
     private void variaveis_padroes() {
         //definir os parametros para o padrao
-        this.jtfFrontend.setText("192.168.1.8");
+        this.jtfFrontend.setText("191.4.234.53");
         this.jtfUsuario.setText("oneadmin");
-        this.jtfSenha.setText("opennebula");
-        this.jtfSla.setText("C:\\Users\\Vinicius Facco\\Dropbox\\UNISINOS\\PIPCA\\Projetos\\AutoElastic\\autoelasticsla.xml");
+        this.jtfSenha.setText("nebula");
+        this.jtfSla.setText("C:\\Users\\Igor\\Dropbox\\TCC\\Cloud\\autoelasticsla.xml");
         this.jtfLogPath.setText("C:\\Temp\\proelastic\\");
         this.jtfExecutionLogName.setText("");
         this.jtfMonitoringInterval.setText("15");
         this.jtfMonitoringWindow.setText("10");
-        this.jtfTemplateid.setText("1");
+        this.jtfTemplateid.setText("4");
         this.jtfThresholdMax.setText("80");
-        this.jtfThresholdMin.setText("40");
+        this.jtfThresholdMin.setText("20");
         this.jtfVmsPorHost.setText("2");
         this.jtfIM.setText("kvm");
         this.jtfVMM.setText("kvm");

@@ -39,7 +39,6 @@ public class About extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jlIcone = new javax.swing.JLabel();
         jl_app = new javax.swing.JLabel();
         jl_version = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -53,13 +52,11 @@ public class About extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jlIcone.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icone64x64.png"))); // NOI18N
-
         jl_app.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
-        jl_app.setText("AutoElastic");
+        jl_app.setText("ProElastic");
 
         jl_version.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        jl_version.setText("Version 2.1");
+        jl_version.setText("Version 1.0");
 
         jta_description.setEditable(false);
         jta_description.setBackground(new java.awt.Color(240, 240, 240));
@@ -67,19 +64,19 @@ public class About extends javax.swing.JFrame {
         jta_description.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jta_description.setLineWrap(true);
         jta_description.setRows(5);
-        jta_description.setText("AutoElastic is an application for managing resources in cloud computing environments. Its main functionality is to provide automatically elasticity of resources. Currently, only the OpenNebula platform is supported.");
+        jta_description.setText("ProElastic is an application for managing resources in cloud computing environments. Its main functionality is to provide automatically elasticity of resources using predictive algoritms. This is a new version of AutoElastic created by Vinicius Facco Rodrigues. Currently, only the OpenNebula platform is supported.");
         jta_description.setWrapStyleWord(true);
         jta_description.setBorder(null);
         jScrollPane1.setViewportView(jta_description);
 
         jl_name.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jl_name.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jl_name.setText("Vinicius Facco Rodrigues");
+        jl_name.setText("Igor Fontana de Nardin");
 
         jl_email.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jl_email.setForeground(new java.awt.Color(0, 0, 255));
         jl_email.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jl_email.setText("<html><u>viniciusfacco@live.com<u/></html>");
+        jl_email.setText("<html><u>igor.fdn@gmail.com<u/></html>");
         jl_email.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jl_emailMouseClicked(evt);
@@ -104,16 +101,9 @@ public class About extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jScrollPane1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jlIcone)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jl_app))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(72, 72, 72)
-                                .addComponent(jl_version)))
-                        .addGap(0, 38, Short.MAX_VALUE))
+                        .addGap(95, 95, 95)
+                        .addComponent(jl_app)
+                        .addGap(0, 66, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jl_name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -123,19 +113,21 @@ public class About extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(141, 141, 141))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(141, 141, 141))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jl_version)
+                        .addGap(135, 135, 135))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jl_app)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jl_version))
-                    .addComponent(jlIcone))
+                .addComponent(jl_app)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jl_version)
                 .addGap(21, 21, 21)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -229,7 +221,6 @@ public class About extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel jlIcone;
     private javax.swing.JLabel jl_app;
     private javax.swing.JLabel jl_email;
     private javax.swing.JLabel jl_name;

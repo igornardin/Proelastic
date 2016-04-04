@@ -227,9 +227,9 @@ public class OneManager {
             Scanner s = new Scanner(Runtime.getRuntime().exec("cmd /c " + comando).getInputStream());
             while (s.hasNextLine()) {
                 resposta = s.nextLine() + "\n";
-                fim = resposta.length() - 5;
+                fim = resposta.length() - 3;
                 for (int j = ip.length() + 13; j <= fim; j++) {
-                    if (resposta.substring(j, j + 5).equals("tempo")) {
+                    if (resposta.substring(j, j + 3).equals("TTL")) {
                         online = true;
                         break;
                     }
