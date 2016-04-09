@@ -25,8 +25,7 @@ public class ProArimaEvaluator extends GenericEvaluator{
         super(viewsize); //call father's constructor
         objname = "evaluators.ProArimaEvaluator";    //rewrite the name
         observ = new ArrayList<>();
-        re = new Rengine(null, true, null);
-        re.eval("require(forecast)");        
+        re = new Rengine(null, true, null);       
     }
     
     //17/02/2016: Igor
@@ -68,9 +67,9 @@ public class ProArimaEvaluator extends GenericEvaluator{
             aux[i] = observ.get(i);
         }
         re.assign("y", aux);
-        re.eval("fit=auto.arima(y)");
-        resp = re.eval("f <- forecast(fit, h=" + forecast + ")");
-        decision_load = (float) resp.asList().at(3).asDoubleArray()[4];
+        re.eval("fit=arima(y, c(2,2,2))");
+        resp = re.eval("f <- predict(fit, " + forecast + ")");
+        decision_load = (float) resp.asList().at(0).asDoubleArray()[forecast - 1];
         return decision_load;
     }
     
