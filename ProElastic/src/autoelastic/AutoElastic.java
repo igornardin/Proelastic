@@ -375,6 +375,7 @@ public class AutoElastic implements Runnable {
         String remotedir_logs = "/one/app/logs/"; //diretorio que o mestre irá utilizar para salvar os logs
         
         String times; //string que receberá os tempos do monitoramento para salvar em um log
+        int exec = 3; //quantidade de execuções
         
         File arquivo; //usaremos para manipular arquivos de logs
         BufferedWriter escritor; //usaremos para manipular arquivos de logs
@@ -390,131 +391,133 @@ public class AutoElastic implements Runnable {
         AutoElastic.intervalo = 15 * 1000;
         AutoElastic.num_vms = 2;
         AutoElastic.viewsize = 6;
-        AutoElastic.evaluatortype = "arima";
-        //AutoElastic.evaluatortype = "full_aging";
+        //AutoElastic.evaluatortype = "arima";
+        AutoElastic.evaluatortype = "full_aging";
         AutoElastic.thresholdtype = "static";
         AutoElastic.image_manager = "kvm";
         AutoElastic.virtual_machine_manager = "kvm";
         AutoElastic.virtual_network_manager = "dummy";
         AutoElastic.cluster_id = 0;
-
+        
         inicialize();
         cloud_manager.setSSHClient(ssh);
         //int initial_hosts = 2;
         int initial_hosts = 1;
         int minimum_hosts = 1;
         boolean letsgo = false;
-        String[] apps = {"wav"};//cargas que serao testadas
-        int[] upperthresholds = {80};//thresholds que serao testados
-        int[] lowerthresholds = {20};//thresholds que serao testados
-        for (String app : apps) {
-            for (int uthreshold : upperthresholds){
-                for (int lthreshold : lowerthresholds){
-                    if (lthreshold <= uthreshold){//não posso fazer execuções em que threshold inferior é maior que o superior
-                        //seto os parametros dessa execução
-                        AutoElastic.logtitle = "proelastic-" + app;
-                        System.out.println("Log: " + AutoElastic.logtitle);
-                        AutoElastic.uppert = (float) uthreshold/100;
-                        AutoElastic.lowert = (float) lthreshold/100;
+        for (int i = 0; i < exec; i++) {
+            String[] apps = {"con", "wav", "asc", "des", "ex-", "ex+"};
+            int[] upperthresholds = {80};//thresholds que serao testados
+            int[] lowerthresholds = {20};//thresholds que serao testados
+            for (String app : apps) {
+                for (int uthreshold : upperthresholds) {
+                    for (int lthreshold : lowerthresholds) {
+                        if (lthreshold <= uthreshold) {//não posso fazer execuções em que threshold inferior é maior que o superior
+                            //seto os parametros dessa execução
+                            AutoElastic.logtitle = "proelastic-" + app + "-" + i;
+                            System.out.println("Log: " + AutoElastic.logtitle);
+                            AutoElastic.uppert = (float) uthreshold / 100;
+                            AutoElastic.lowert = (float) lthreshold / 100;
 
-                        export_log(0,0,0,0,0,0,0,0,0,0,0,0,0,0,"Contador;Tempo;Tempo Milisegundos;Total Hosts Ativos;Total CPU Alocada;Total CPU Usada;Total RAM Alocada;Total RAM Usada;CPU Limite Superior;CPU Limite Inferior;% Carga de CPU;Load Calculado;Threshold Inferior;Threshold Superior;Tempos de Monitoramento");
-                        thresholds.reset(uppert, lowert);
-                        evaluator.reset();
+                            export_log(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Contador;Tempo;Tempo Milisegundos;Total Hosts Ativos;Total CPU Alocada;Total CPU Usada;Total RAM Alocada;Total RAM Usada;CPU Limite Superior;CPU Limite Inferior;% Carga de CPU;Load Calculado;Threshold Inferior;Threshold Superior;Tempos de Monitoramento");
+                            thresholds.reset(uppert, lowert);
+                            evaluator.reset();
 
-                        //tenho que verificar se não tenho recursos sendo iniciados da execução anterior
-                        if(cloud_manager.newResourcesPending()){
-                            System.out.println("Ainda tem recursos sendo iniciados da execução anterior.");
-                            while(cloud_manager.newResourcesPending()){}//fico aqui enquanto não estiverem online
-                            ssh.deleteFile("novorecurso.txt", remotedir_message);//agora deleto o arquivo que o manager enviou para avisar dos novos recursos
-                        }
-                            
-                        //volto para um host que é o mínimo
-                        while(cloud_manager.getTotalActiveHosts() > minimum_hosts){
-                            cloud_manager.decreaseResourcesHard();//removo um
-                        }
+                            //tenho que verificar se não tenho recursos sendo iniciados da execução anterior
+                            if (cloud_manager.newResourcesPending()) {
+                                System.out.println("Ainda tem recursos sendo iniciados da execução anterior.");
+                                while (cloud_manager.newResourcesPending()) {
+                                }//fico aqui enquanto não estiverem online
+                                ssh.deleteFile("novorecurso.txt", remotedir_message);//agora deleto o arquivo que o manager enviou para avisar dos novos recursos
+                            }
+
+                            //volto para um host que é o mínimo
+                            while (cloud_manager.getTotalActiveHosts() > minimum_hosts) {
+                                cloud_manager.decreaseResourcesHard();//removo um
+                            }
 
                         //usado somente se quantidade inicial de hosts é maior que a quantidade mínima definida pelo SLA
-                        //while (!letsgo){//para eu prosseguir primeiro tenho que estar com a quantidade de vms 
-                        //    if (cloud_manager.getTotalActiveHosts() > initial_hosts){//se eu tiver mais hosts que o inicial
-                        //        cloud_manager.decreaseResourcesHard();//removo um
-                        //    } else if (cloud_manager.getTotalActiveHosts() < initial_hosts){//agora se eu tiver menos hosts que o inicial
-                        //        cloud_manager.increaseResources();//eu adiciono mais um
-                        //    }
-                        //    if (!(cloud_manager.getTotalActiveHosts() == initial_hosts)){ //se a quantidade é igual já posso continuar
-                        //        while (cloud_manager.newResourcesPending()){//se não, vejo se tem recursos sendo alocados
-                        //            Thread.sleep(1000);
-                        //            //coloquei esse while pq se eu tiver 
-                        //            //que alocar mais de um recurso para chegar a quantidade ideal, 
-                        //            //vou alocar um de cada vez, sendo que só proseguirei quando as 
-                        //            //vms do anterior já estiverem online. isso pois nesse momento 
-                        //            //o mestre já estará esperando conexões e quero garantir que 
-                        //            //elas aconteçam na ordem
-                        //        } 
-                        //    } else letsgo = true; //se a quantidade já for igual posso prosseguir mesmo se eu tiver vms sendo alocadas
-                        //}
-                        //letsgo = false;
+                            //while (!letsgo){//para eu prosseguir primeiro tenho que estar com a quantidade de vms 
+                            //    if (cloud_manager.getTotalActiveHosts() > initial_hosts){//se eu tiver mais hosts que o inicial
+                            //        cloud_manager.decreaseResourcesHard();//removo um
+                            //    } else if (cloud_manager.getTotalActiveHosts() < initial_hosts){//agora se eu tiver menos hosts que o inicial
+                            //        cloud_manager.increaseResources();//eu adiciono mais um
+                            //    }
+                            //    if (!(cloud_manager.getTotalActiveHosts() == initial_hosts)){ //se a quantidade é igual já posso continuar
+                            //        while (cloud_manager.newResourcesPending()){//se não, vejo se tem recursos sendo alocados
+                            //            Thread.sleep(1000);
+                            //            //coloquei esse while pq se eu tiver 
+                            //            //que alocar mais de um recurso para chegar a quantidade ideal, 
+                            //            //vou alocar um de cada vez, sendo que só proseguirei quando as 
+                            //            //vms do anterior já estiverem online. isso pois nesse momento 
+                            //            //o mestre já estará esperando conexões e quero garantir que 
+                            //            //elas aconteçam na ordem
+                            //        } 
+                            //    } else letsgo = true; //se a quantidade já for igual posso prosseguir mesmo se eu tiver vms sendo alocadas
+                            //}
+                            //letsgo = false;
+                            //depois disso estarão rodando apenas os slaves e terei que rodar o master
+                            System.out.println("Quantidade de hosts inicial atingida.");
 
-                        //depois disso estarão rodando apenas os slaves e terei que rodar o master
-                        System.out.println("Quantidade de hosts inicial atingida.");
-
-                        //crio o comando para rodar a aplicação com esses parâmetros
-                        master_command = "/one/app/scripts/master.sh " 
-                                + AutoElastic.logtitle  
-                                //#1 titulo do log
-                                + " " 
-                                + ip_vm_master          
-                                //#2 ip do master
-                                + " " 
-                                + app                   
-                                //#3 aplicação
-                                + " "
-                                + (initial_hosts * 2)               
-                                //#4 quantidade inicial de vms
-                                + " "
-                                + remotedir_logs + "teste/" + app + "/";
+                            //crio o comando para rodar a aplicação com esses parâmetros
+                            master_command = "/one/app/scripts/master.sh "
+                                    + AutoElastic.logtitle
+                                    //#1 titulo do log
+                                    + " "
+                                    + ip_vm_master
+                                    //#2 ip do master
+                                    + " "
+                                    + app
+                                    //#3 aplicação
+                                    + " "
+                                    + (initial_hosts * 2)
+                                    //#4 quantidade inicial de vms
+                                    + " "
+                                    + remotedir_logs + "teste/" + app + "/";
                                 //#5 diretorio que o mestre vai salvar o log
-                        //crio o arquivo para o bash ler e rodar o comando de dentro dele
-                        System.out.println("Comando de inicialização da aplicação: " + master_command);
+                            //crio o arquivo para o bash ler e rodar o comando de dentro dele
+                            System.out.println("Comando de inicialização da aplicação: " + master_command);
 
-                        arquivo = new File(localdir_temp_files + autoelastic_message_start);
-                        escritor = new BufferedWriter(new FileWriter(arquivo));
-                        escritor.write(master_command);
-                        escritor.close();
+                            arquivo = new File(localdir_temp_files + autoelastic_message_start);
+                            escritor = new BufferedWriter(new FileWriter(arquivo));
+                            escritor.write(master_command);
+                            escritor.close();
 
-                        ssh.sendFile(arquivo.getAbsolutePath(), remotedir_message);
-                        System.out.println("Arquivo de inicialização enviado.");
+                            ssh.sendFile(arquivo.getAbsolutePath(), remotedir_message);
+                            System.out.println("Arquivo de inicialização enviado.");
 
                         //agora tenho que ver se posso iniciar o monitoramento
-                        //só irei monitorar quando o mestre iniciar o processamento                    
-                        while (!ssh.fileExists(server_message_start, remotedir_message)){
-                            System.out.println("Aguardando inicialização da aplicação...");
-                            Thread.sleep(500);
+                            //só irei monitorar quando o mestre iniciar o processamento                    
+                            while (!ssh.fileExists(server_message_start, remotedir_message)) {
+                                System.out.println("Aguardando inicialização da aplicação...");
+                                Thread.sleep(500);
+                            }
+
+                            //aqui vamos colocar dentro do arquivo de alocações um marcador de que uma nova execução está iniciando. Esse marcador vai ser o nome da execução que é o nome do outro log que é gerado
+                            arquivo = new File("C:\\temp\\proelastic\\proelastic_resource_operation.csv");
+                            escritor = new BufferedWriter(new FileWriter(arquivo, true));
+                            escritor.append(System.currentTimeMillis() + ";INI " + AutoElastic.logtitle + "\n");
+                            escritor.close();
+
+                            System.out.println("###############Aplicação iniciada###############");
+                            times = this.monitoring(ssh, server_message_stop, remotedir_message);
+                            System.out.println("###############Aplicação finalizada###############");
+
+                            //aqui vamos escrever dentro do arquivo de alocações que a execução terminou
+                            arquivo = new File("C:\\temp\\proelastic\\proelastic_resource_operation.csv");
+                            escritor = new BufferedWriter(new FileWriter(arquivo, true));
+                            escritor.append(System.currentTimeMillis() + ";FIM " + AutoElastic.logtitle + "\n");
+                            escritor.close();
+
+                            //deletamos o arquivo que informa que a aplicação iniciou
+                            ssh.deleteFile(server_message_start, remotedir_message);
+
+                            //vamos salvar o log com os tempos do AutoElastic
+                            arquivo = new File("C:\\temp\\proelastic\\Tempos-" + AutoElastic.logtitle + ".csv");
+                            escritor = new BufferedWriter(new FileWriter(arquivo, true));
+                            escritor.append(times);
+                            escritor.close();
                         }
-
-                        //aqui vamos colocar dentro do arquivo de alocações um marcador de que uma nova execução está iniciando. Esse marcador vai ser o nome da execução que é o nome do outro log que é gerado
-                        arquivo = new File("C:\\temp\\proelastic\\proelastic_resource_operation.csv");
-                        escritor = new BufferedWriter(new FileWriter(arquivo, true));
-                        escritor.append(System.currentTimeMillis() + ";INI " + AutoElastic.logtitle + "\n");
-                        escritor.close();
-
-                        System.out.println("###############Aplicação iniciada###############");
-                        times = this.monitoring(ssh, server_message_stop, remotedir_message);
-                        System.out.println("###############Aplicação finalizada###############");
-
-                        //aqui vamos escrever dentro do arquivo de alocações que a execução terminou
-                        arquivo = new File("C:\\temp\\proelastic\\proelastic_resource_operation.csv");
-                        escritor = new BufferedWriter(new FileWriter(arquivo, true));
-                        escritor.append(System.currentTimeMillis() + ";FIM " + AutoElastic.logtitle + "\n");
-                        escritor.close();
-
-                        //deletamos o arquivo que informa que a aplicação iniciou
-                        ssh.deleteFile(server_message_start, remotedir_message);
-
-                        //vamos salvar o log com os tempos do AutoElastic
-                        arquivo = new File("C:\\temp\\proelastic\\Tempos-" + AutoElastic.logtitle + ".csv");
-                        escritor = new BufferedWriter(new FileWriter(arquivo, true));
-                        escritor.append(times);
-                        escritor.close();
                     }
                 }
             }
