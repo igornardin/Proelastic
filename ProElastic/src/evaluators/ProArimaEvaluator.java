@@ -39,6 +39,12 @@ public class ProArimaEvaluator extends GenericEvaluator{
     @Override
     public boolean evaluate(float upper_threshold, float lower_threshold){        
             //test if the aging is out of the range between the thresholds
+        if (counter < VIEW_SIZE - 1){
+            high_alert = false;
+            low_alert = false;
+            counter++;
+            return false;
+        }
         if (decision_load > 0.80) { //test if we have a violation on the higher threshold after aply the aging
             high_alert = true; 
             low_alert = false; 
@@ -59,7 +65,6 @@ public class ProArimaEvaluator extends GenericEvaluator{
         decision_load = 0;
         observ.add(load);
         if (counter < VIEW_SIZE - 1){
-            counter++;
             return decision_load;
         }
         double[] aux = new double[observ.size()];
@@ -67,9 +72,11 @@ public class ProArimaEvaluator extends GenericEvaluator{
             aux[i] = observ.get(i);
         }
         re.assign("y", aux);
-        re.eval("fit=arima(y, c(2,2,2))");
+        re.eval("fit=arima(y, c(0,2,1))");
         resp = re.eval("f <- predict(fit, " + forecast + ")");
         decision_load = (float) resp.asList().at(0).asDoubleArray()[forecast - 1];
+        if(decision_load < 0)
+            decision_load = 0;
         return decision_load;
     }
     

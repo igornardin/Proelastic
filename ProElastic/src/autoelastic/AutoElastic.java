@@ -365,7 +365,7 @@ public class AutoElastic implements Runnable {
         
         SSHClient ssh = new SSHClient(srv, usr, pwd);
         //TODO: Ajustar o IP do mestre
-        String ip_vm_master = "191.4.238.100";//VM que vai rodar mestre e slave inicial. Processos devem ser iniciados manualmente aqui.
+        String ip_vm_master = "191.4.238.125";//VM que vai rodar mestre e slave inicial. Processos devem ser iniciados manualmente aqui.
         String server_message_start = "appstarted";
         String server_message_stop = "appstoped";
         String autoelastic_message_start = "startapp";
@@ -391,8 +391,8 @@ public class AutoElastic implements Runnable {
         AutoElastic.intervalo = 15 * 1000;
         AutoElastic.num_vms = 2;
         AutoElastic.viewsize = 6;
-        //AutoElastic.evaluatortype = "arima";
-        AutoElastic.evaluatortype = "full_aging";
+        AutoElastic.evaluatortype = "arima";
+        //AutoElastic.evaluatortype = "full_aging";
         AutoElastic.thresholdtype = "static";
         AutoElastic.image_manager = "kvm";
         AutoElastic.virtual_machine_manager = "kvm";
@@ -621,9 +621,9 @@ public class AutoElastic implements Runnable {
             if (resourcesPending){//se tenho recursos pendentes, entao devo verificar se eles ja estao online para eu adicionalos e recalcular os thresholds
                 load_before = evaluator.getDecisionLoad();
                 resourcesPending = cloud_manager.newResourcesPending(); //verifico no final antes do sleep se tenho que entregar mais recursos, dessa maneira esses recursos só serão analisados na próxima observação
-//                if (!resourcesPending){//se agora eles não estão mais pendentes é porque ficaram online, tenho que recalcular os thresholds no início da próxima observação
-//                    recalculate_thresholds = 1;
-//                }
+                if (!resourcesPending){//se agora eles não estão mais pendentes é porque ficaram online, tenho que recalcular os thresholds no início da próxima observação
+                    evaluator.reset();
+                }
             }            
             times = times + ";" + System.currentTimeMillis(); //T12-AposVerificarRecursosPendentes&FimLoop
             timeLoop = System.currentTimeMillis() - timen; //pego o tempo que cheguei até aqui e calculo o tempo após o sleep (inicio do processamento)
